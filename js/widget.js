@@ -28,7 +28,7 @@ class IpPingModel extends WidgetModel {
 
 	async GetPingModel(ip)
 	{
-		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/www.google.fr"); // load web page
+		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
 		let domstr = _atob(result.response.dom); // decode result
 
 		var ping = /\d+(?:.\d+)?\s?ms/.exec(domstr);
