@@ -54,9 +54,6 @@ class IpPingView extends WidgetView {
 
 	draw() {
 		super.draw();
-		/*this.link = HH.create("a");
-		SS.style(this.link, {"fontSize": "10px", "textDecoration": "none"});
-		this.stage.appendChild(this.link);*/
 
 		//label
 		this.try.pingContainer = HH.create("div");
@@ -98,8 +95,6 @@ class IpPingController extends WidgetController {
 	async GetPingController(ip) {
 
 		let result = await this.mvc.model.GetPingModel(ip);
-
-		console.log(result);
 
 		this.mvc.view.update(result);
 	}
