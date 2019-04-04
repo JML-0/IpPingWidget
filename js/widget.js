@@ -96,9 +96,9 @@ class IpPingController extends WidgetController {
 		let loadPage = ("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
 		console.log(loadPage);
 	}
-	
+
 	async load() {
-		let result = await this.mvc.main.dom("https://lemonde.fr"); // load web page
+		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/www.google.fr"); // load web page
 		let domstr = _atob(result.response.dom); // decode result
 		let parser = new DOMParser(); // init dom parser
 		let dom = parser.parseFromString(domstr, "text/html"); // inject result
@@ -119,6 +119,11 @@ class IpPingController extends WidgetController {
 		console.log('------------------------------------------------------');
 		console.log('------------------------FIN---------------------------');
 		console.log('------------------------------------------------------');
+
+		var test = /\d+(?:.\d+)?\s?ms/.exec(domstr);
+		test
+			? console.log(test[0])
+			: console.log("error");
 	}
 	
 }
