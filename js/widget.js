@@ -26,6 +26,10 @@ class IpPingModel extends WidgetModel {
 		super.setUp();
 	}
 
+	/**
+	* Retourne le ping obtenu selon l'ip
+	* @param ip : ip à tester
+	*/
 	async GetPingModel(ip)
 	{
 		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
@@ -75,9 +79,13 @@ class IpPingView extends WidgetView {
 		this.try.stage.appendChild(this.try.footer);
 	}
 	
-	update(ping) {
-		this.pingContainer.innerHTML = ping;
-	}
+	/**
+	* Affiche le ping sur @pingContainer
+	* @param ping : ping obtenu
+	*/
+	update(ping){this.pingContainer.innerHTML = ping;}
+
+	loading(){this.pingContainer.innerHTML = "...";}
 	
 }
 
@@ -92,11 +100,26 @@ class IpPingController extends WidgetController {
 		
 	}
 
+	GetPingEnabled = true;
+
+	/**
+	* Récupère le ping obtenu depuis @GetPingModel puis appel la méthode @update
+	* @param ip : ip à tester
+	*/
 	async GetPingController(ip) {
 
-		let result = await this.mvc.model.GetPingModel(ip);
+		if (GetPingEnabled)
+		{
+			GetPingEnabled = false;
 
-		this.mvc.view.update(result);
+			this.mvc.view.loading();
+
+			let result = await this.mvc.model.GetPingModel(ip);
+
+			this.mvc.view.update(result);
+
+			GetPingEnabled = true;
+		}
 	}
 	
 }
