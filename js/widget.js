@@ -79,7 +79,7 @@ class IpPingView extends WidgetView {
 	}
 	
 	update(ping) {
-		this.mvc.view.pingContainer.innerHTML = ping;
+		this.pingContainer.innerHTML = ping;
 	}
 	
 }
