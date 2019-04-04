@@ -108,9 +108,9 @@ class IpPingController extends WidgetController {
 	*/
 	async GetPingController(ip) {
 
-		if (GetPingEnabled)
+		if (this.GetPingEnabled)
 		{
-			GetPingEnabled = false;
+			this.GetPingEnabled = false;
 
 			this.mvc.view.loading();
 
@@ -118,7 +118,7 @@ class IpPingController extends WidgetController {
 
 			this.mvc.view.update(result);
 
-			GetPingEnabled = true;
+			this.GetPingEnabled = true;
 		}else{console.log("en cours");}
 	}
 	
