@@ -119,7 +119,7 @@ class IpPingController extends WidgetController {
 			this.mvc.view.update(result);
 
 			GetPingEnabled = true;
-		}
+		}else{console.log("en cours");}
 	}
 	
 }
