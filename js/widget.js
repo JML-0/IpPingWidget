@@ -21,9 +21,13 @@ class IpPingModel extends WidgetModel
 	
 	setUp() { super.setUp(); }
 
-	CheckValue(value)
+	/**
+	* Retourne true si l'ip saisie est conforme
+	* @param ip : ip à tester
+	*/
+	CheckIp(ip)
 	{
-		var reg = /^((?:(https?):\/\/)?((?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9]))|(?:(?:(?:\w+\.){1,2}[\w]{2,3})))(?::(\d+))?((?:\/[\w]+)*)(?:\/|(\/[\w]+\.[\w]{3,4})|(\?(?:([\w]+=[\w]+)&)*([\w]+=[\w]+))?|\?(?:(wsdl|wadl))))$/.exec(value);
+		var reg = /^((?:(https?):\/\/)?((?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9]))|(?:(?:(?:\w+\.){1,2}[\w]{2,3})))(?::(\d+))?((?:\/[\w]+)*)(?:\/|(\/[\w]+\.[\w]{3,4})|(\?(?:([\w]+=[\w]+)&)*([\w]+=[\w]+))?|\?(?:(wsdl|wadl))))$/.exec(ip);
 
 		if (reg)
 		{
@@ -83,7 +87,7 @@ class IpPingView extends WidgetView
 		//button
 		this.try.footer.innerHTML = "TEST PING";
 		SS.style(this.try.footer, {"fontSize": "16px", "userSelect": "none", "cursor": "pointer"});
-		Events.on(this.try.footer, "click", event => this.try.mvc.controller.CheckValue(this.try.ipContainer.value));
+		Events.on(this.try.footer, "click", event => this.try.mvc.controller.CheckIp(this.try.ipContainer.value));
 		this.try.stage.appendChild(this.try.footer);
 	}
 	
@@ -109,6 +113,30 @@ class IpPingController extends WidgetController
 	GetPingEnabled = true;
 
 	/**
+	* Si l'ip est conforme on lance @GetPing
+	* @param ip : ip à tester
+	*/
+	CheckIp(ip)
+	{
+		if (this.GetPingEnabled)
+		{
+			this.GetPingEnabled = false; // bloque les tests de pings
+
+			let result = this.mvc.model.CheckIp(ip);
+
+			if (result)
+			{
+				this.GetPing(ip);
+			}
+			else
+			{
+				alert("La saisie n'est pas conforme.");
+				this.GetPingEnabled = true; // débloque les tests de pings
+			}
+		}	
+	}
+
+	/**
 	* Récupère le ping obtenu depuis @GetPingModel puis appel la méthode @update
 	* @param ip : ip à tester
 	*/
@@ -121,25 +149,5 @@ class IpPingController extends WidgetController
 		this.mvc.view.update(result);
 
 		this.GetPingEnabled = true; // débloque les tests de pings
-	}
-
-	CheckValue(value)
-	{
-		if (this.GetPingEnabled)
-		{
-			this.GetPingEnabled = false; // bloque les tests de pings
-
-			let result = this.mvc.model.CheckValue(value);
-
-			if (result)
-			{
-				this.GetPing(value);
-			}
-			else
-			{
-				alert("La saisie n'est pas conforme.");
-				this.GetPingEnabled = true; // débloque les tests de pings
-			}
-		}	
 	}
 }
