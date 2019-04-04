@@ -32,7 +32,7 @@ class IpPingModel extends WidgetModel {
 	*/
 	async GetPingModel(ip)
 	{
-		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
+		let result = await this.try.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
 		let domstr = _atob(result.response.dom); // decode result
 
 		var ping = /\d+(?:.\d+)?\s?ms/.exec(domstr);
@@ -114,7 +114,7 @@ class IpPingController extends WidgetController {
 
 			this.mvc.view.loading();
 
-			let result = await this.mvc.model.GetPingModel(ip);
+			let result = await this.try.mvc.model.GetPingModel(ip);
 
 			this.mvc.view.update(result);
 
