@@ -26,6 +26,12 @@ class IpPingModel extends WidgetModel {
 		super.setUp();
 	}
 
+	/*async GetPing(ip)
+	{
+		let loadPage = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
+		console.log(loadPage);
+	}*/
+
 }
 
 class IpPingView extends WidgetView {
@@ -61,7 +67,7 @@ class IpPingView extends WidgetView {
 		//button
 		this.try.footer.innerHTML = "DÉMARRER";
 		SS.style(this.try.footer, {"fontSize": "16px", "userSelect": "none", "cursor": "pointer"});
-		Events.on(this.try.footer, "click", event => this.try.mvc.controller.GetPing(this.try.ipContainer.value));
+		Events.on(this.try.footer, "click", event => this.try.mvc.controller.load());
 		this.try.stage.appendChild(this.try.footer);
 	}
 	
@@ -84,27 +90,35 @@ class IpPingController extends WidgetController {
 	}
 
 	async GetPing(ip) {
-		this.mvc.view.pingContainer.innerHTML = "34 ms";
+		console.log(ip);
+		this.mvc.view.pingContainer.innerHTML = "35 ms";
 
-		/*var exec = require('child_process').exec;
-		var ping = exec('ping 127.0.0.1');
-		//var ping = exec('cmd /C ping 127.0.0.1');
-		ping.stdout.on('data', function (data) {
-		console.log('' + data);
-		});*/
-
-		let result = await this.try.mvc.main.send("child_process", {"ping" : ip});
-		console.log(result);
-
+		let loadPage = ("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
+		console.log(loadPage);
 	}
 	
-	/*async load() {
+	async load() {
 		let result = await this.mvc.main.dom("https://lemonde.fr"); // load web page
 		let domstr = _atob(result.response.dom); // decode result
 		let parser = new DOMParser(); // init dom parser
 		let dom = parser.parseFromString(domstr, "text/html"); // inject result
 		let article = new xph().doc(dom).ctx(dom).craft('//*[@id="en-continu"]/div/ul/li[1]/a').firstResult; // find interesting things
 		this.mvc.view.update(article.textContent, article.getAttribute("href"));
-	}*/
+
+
+		console.log(result);
+		console.log('------------------------------------------------------');
+		console.log(domstr);
+		console.log('------------------------------------------------------');
+		console.log(parser);
+		console.log('------------------------------------------------------');
+		console.log(dom);
+		console.log(article);
+		console.log('------------------------------------------------------');
+		console.log(article.textContent);
+		console.log('------------------------------------------------------');
+		console.log('------------------------FIN---------------------------');
+		console.log('------------------------------------------------------');
+	}
 	
 }
