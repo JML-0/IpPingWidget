@@ -26,11 +26,18 @@ class IpPingModel extends WidgetModel {
 		super.setUp();
 	}
 
-	/*async GetPing(ip)
+	async GetPingModel(ip)
 	{
-		let loadPage = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
-		console.log(loadPage);
-	}*/
+		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/www.google.fr"); // load web page
+		let domstr = _atob(result.response.dom); // decode result
+
+		var ping = /\d+(?:.\d+)?\s?ms/.exec(domstr);
+		
+		if (ping)
+		{
+			return ping[0];
+		}else{return "erreur";}
+	}
 
 }
 
@@ -67,14 +74,13 @@ class IpPingView extends WidgetView {
 		//button
 		this.try.footer.innerHTML = "DÉMARRER";
 		SS.style(this.try.footer, {"fontSize": "16px", "userSelect": "none", "cursor": "pointer"});
-		Events.on(this.try.footer, "click", event => this.try.mvc.controller.load());
+		Events.on(this.try.footer, "click", event => this.try.mvc.controller.GetPingController(this.try.ipContainer.value));
 		this.try.stage.appendChild(this.try.footer);
 	}
 	
-	/*update(title, link) {
-		this.link.innerHTML = title;
-		HH.attr(this.link, {"href": "https://www.lemonde.fr" + link, "target": "_blank"});
-	}*/
+	update(ping) {
+		this.mvc.view.pingContainer.innerHTML = ping;
+	}
 	
 }
 
@@ -89,41 +95,13 @@ class IpPingController extends WidgetController {
 		
 	}
 
-	async GetPing(ip) {
-		console.log(ip);
-		this.mvc.view.pingContainer.innerHTML = "35 ms";
+	async GetPingController(ip) {
 
-		let loadPage = ("https://node.nicopr.fr/dash/ping/ping/" + ip); // load web page
-		console.log(loadPage);
-	}
-
-	async load() {
-		let result = await this.mvc.main.dom("https://node.nicopr.fr/dash/ping/ping/www.google.fr"); // load web page
-		let domstr = _atob(result.response.dom); // decode result
-		//let parser = new DOMParser(); // init dom parser
-		//let dom = parser.parseFromString(domstr, "text/html"); // inject result
-		//let article = new xph().doc(dom).ctx(dom).craft('//*[@id="en-continu"]/div/ul/li[1]/a').firstResult; // find interesting things
-		//this.mvc.view.update(article.textContent, article.getAttribute("href"));
-
+		let result = await this.mvc.model.GetPingModel(ip);
 
 		console.log(result);
-		console.log('------------------------------------------------------');
-		console.log(domstr);
-		console.log('------------------------------------------------------');
-		/*console.log(parser);
-		console.log('------------------------------------------------------');
-		console.log(dom);
-		console.log(article);
-		console.log('------------------------------------------------------');
-		console.log(article.textContent);*/
-		console.log('------------------------------------------------------');
-		console.log('------------------------FIN---------------------------');
-		console.log('------------------------------------------------------');
 
-		var test = /\d+(?:.\d+)?\s?ms/.exec(domstr);
-		test
-			? console.log(test[0])
-			: console.log("error");
+		this.mvc.view.update(result);
 	}
 	
 }
