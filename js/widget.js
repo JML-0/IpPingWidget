@@ -5,14 +5,18 @@ class IpPingWidget extends Widget
 		super(id, IpPingModel, IpPingView, IpPingController, app);
 	}
 	
-	setUp() 
-	{
+	setUp() {
 		super.setUp();
 		this.header = true;
 		this.footer = true;
 	}
 	
-	async ready() { super.ready(); }
+	async ready() {
+		super.ready();
+		SocketIO.initialize();
+		SocketIO.on("msg", this.mvc.controller.onMessage.bind(this));
+	}
+	
 }
 
 class IpPingModel extends WidgetModel 
