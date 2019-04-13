@@ -13,8 +13,8 @@ class IpPingWidget extends Widget
 	
 	async ready() {
 		super.ready();
-		SocketIO.initialize();
-		SocketIO.on("msg", this.mvc.controller.onMessage.bind(this));
+		/*SocketIO.initialize();
+		SocketIO.on("msg", this.mvc.controller.onMessage.bind(this));*/
 	}
 	
 }
