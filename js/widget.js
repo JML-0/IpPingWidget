@@ -34,13 +34,9 @@ class IpPingModel extends WidgetModel
 		var reg = /^((?:(https?):\/\/)?((?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])\.)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9]))|(?:(?:(?:\w+\.){1,2}[\w]{2,3})))(?::(\d+))?((?:\/[\w]+)*)(?:\/|(\/[\w]+\.[\w]{3,4})|(\?(?:([\w]+=[\w]+)&)*([\w]+=[\w]+))?|\?(?:(wsdl|wadl))))$/.exec(ip);
 
 		if (reg)
-		{
 			return true;
-		}
 		else
-		{
 			return false;
-		}
 	}
 
 	/**
@@ -55,13 +51,9 @@ class IpPingModel extends WidgetModel
 		var ping = /\d+(?:.\d+)?\s?ms/.exec(domstr);
 		
 		if (ping)
-		{
 			return ping[0];
-		}
 		else
-		{
 			return "erreur";
-		}
 	}
 }
 
@@ -99,12 +91,12 @@ class IpPingView extends WidgetView
 	* Affiche le ping sur @pingContainer
 	* @param ping : ping obtenu
 	*/
-	update(ping){ this.pingContainer.innerHTML = ping; }
+	update(ping) { this.pingContainer.innerHTML = ping; }
 
 	/**
 	* Informe l'utilisateur que le ping est en cours d'obtention
 	*/
-	loading(){ this.pingContainer.innerHTML = "..."; }
+	loading() { this.pingContainer.innerHTML = "..."; }
 }
 
 class IpPingController extends WidgetController 
@@ -129,9 +121,7 @@ class IpPingController extends WidgetController
 			let result = this.mvc.model.CheckIp(ip);
 
 			if (result)
-			{
 				this.GetPing(ip);
-			}
 			else
 			{
 				alert("La saisie n'est pas conforme.");
